@@ -71,6 +71,7 @@ export default function LeafletMap({ issues, onIssueSelect }: LeafletMapProps) {
           weight={2}
           opacity={0.9}
           fillOpacity={issue.status === 'resolved' ? 0.5 : 0.75}
+          className="breathing-marker"
           eventHandlers={{ 
             click: () => onIssueSelect(issue),
             mouseover: (e) => {

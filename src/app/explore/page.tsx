@@ -45,7 +45,7 @@ export default function ExplorePage() {
     <div style={{ height: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Top nav */}
       <nav style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 40, flexShrink: 0 }}>
-        <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
           <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 26, height: 26 }} />
           <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-primary)' }}>CivicLens</span>
         </Link>
