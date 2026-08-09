@@ -3,7 +3,7 @@ import { useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { MapPin, Upload, X, CheckCircle2, AlertTriangle, ArrowLeft, ArrowRight, Camera, Loader2 } from 'lucide-react';
+import { MapPin, Upload, X, CheckCircle2, AlertTriangle, ArrowLeft, ArrowRight, Camera, Loader2, ChevronDown } from 'lucide-react';
 import { apiClient } from '@/lib/apiClient';
 import { useAuth } from '@/context/AuthContext';
 import { PriorityGauge } from '@/components/ui/PriorityGauge';
@@ -180,6 +180,97 @@ function StepAIProcessing({ imageFile, description, onNext, onError }: any) {
   );
 }
 
+// --- Custom Select Component ---
+function CustomSelect({ value, onChange, options, formatLabel = (v: string) => v }: any) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
+  return (
+    <div ref={ref} style={{ position: 'relative' }}>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        style={{
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '12px 16px',
+          background: 'var(--surface-hover)',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-md)',
+          color: 'var(--text-primary)',
+          fontSize: 14,
+          fontWeight: 500,
+          textAlign: 'left',
+          cursor: 'pointer',
+          transition: 'all 0.2s'
+        }}
+      >
+        <span style={{ textTransform: 'capitalize' }}>{formatLabel(value)}</span>
+        <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown size={16} color="var(--text-secondary)" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -5, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -5, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            style={{
+              position: 'absolute',
+              top: 'calc(100% + 8px)',
+              left: 0,
+              right: 0,
+              background: 'var(--surface)',
+              border: '1px solid var(--border)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+              zIndex: 50,
+              maxHeight: 220,
+              overflowY: 'auto',
+              padding: 4
+            }}
+          >
+            {options.map((opt: string) => (
+              <div
+                key={opt}
+                onClick={() => { onChange(opt); setOpen(false); }}
+                style={{
+                  padding: '10px 12px',
+                  borderRadius: 'var(--radius-sm)',
+                  cursor: 'pointer',
+                  fontSize: 14,
+                  fontWeight: value === opt ? 700 : 500,
+                  color: value === opt ? 'var(--accent)' : 'var(--text-primary)',
+                  background: value === opt ? 'var(--accent-dim)' : 'transparent',
+                  textTransform: 'capitalize',
+                  marginBottom: 2
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = value === opt ? 'var(--accent-dim)' : 'var(--surface-hover)'}
+                onMouseLeave={e => e.currentTarget.style.background = value === opt ? 'var(--accent-dim)' : 'transparent'}
+              >
+                {formatLabel(opt)}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // --- Step 3: Review AI Result ---
 const CATEGORIES = ['pothole', 'road_damage', 'garbage_waste', 'streetlight', 'water_leakage', 'drainage', 'sidewalk', 'traffic_hazard', 'public_infrastructure', 'other'];
 const SEVERITIES = ['low', 'medium', 'high', 'critical'];
@@ -216,15 +307,20 @@ function StepReviewAI({ aiResult, imageUrl, onNext, onBack }: any) {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
         <div>
           <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: 'var(--text-secondary)' }}>Category</label>
-          <select className="input" value={category} onChange={e => setCategory(e.target.value)}>
-            {CATEGORIES.map(c => <option key={c} value={c}>{c.replace('_', ' ')}</option>)}
-          </select>
+          <CustomSelect
+            value={category}
+            onChange={setCategory}
+            options={CATEGORIES}
+            formatLabel={(v: string) => v.replace('_', ' ')}
+          />
         </div>
         <div>
           <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: 'var(--text-secondary)' }}>Severity</label>
-          <select className="input" value={severity} onChange={e => setSeverity(e.target.value)}>
-            {SEVERITIES.map(s => <option key={s} value={s}>{s.toUpperCase()}</option>)}
-          </select>
+          <CustomSelect
+            value={severity}
+            onChange={setSeverity}
+            options={SEVERITIES}
+          />
         </div>
       </div>
 

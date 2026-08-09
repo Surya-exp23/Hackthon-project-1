@@ -1,10 +1,12 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logger } from '../utils/logger';
 
-const genAI = new GoogleGenerativeAI(process.env.AI_API_KEY || '');
-
 export const analyzeCivicIssue = async (imageUrl: string, description?: string) => {
   try {
+    const apiKey = process.env.AI_API_KEY || '';
+    if (!apiKey) throw new Error('AI_API_KEY is not defined');
+    
+    const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',
       generationConfig: {
@@ -54,6 +56,15 @@ Schema:
     return JSON.parse(sanitizedText);
   } catch (error) {
     logger.error('AI Analysis failed:', error);
-    return { success: false };
+    // Graceful fallback if the API key is invalid or model fails
+    return {
+      category: 'other',
+      issueType: 'general_issue',
+      severity: 'medium',
+      confidence: 0.5,
+      summary: 'AI analysis unavailable. Please review and classify manually.',
+      recommendedDepartment: 'general_services',
+      riskFactors: ['needs_manual_review']
+    };
   }
 };
