@@ -136,15 +136,20 @@ export default function AdminMapPage() {
         </div>
 
         {/* Map Area */}
-        <div style={{ flex: 1, position: 'relative' }}>
-          {loading ? (
-             <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-               <p style={{ color: 'var(--text-muted)' }}>Loading map data...</p>
-             </div>
-          ) : (
-            <MapComponent issues={filtered} onIssueSelect={setSelectedIssue} />
-          )}
-
+        <div style={{ flex: 1, padding: 16, background: 'var(--bg)', overflow: 'hidden' }}>
+          <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
+            {loading ? (
+              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--surface)' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div className="skeleton" style={{ width: 80, height: 80, borderRadius: '50%', margin: '0 auto 16px' }} />
+                  <p style={{ color: 'var(--text-muted)' }}>Loading city intelligence map...</p>
+                </div>
+              </div>
+            ) : (
+              <MapComponent issues={filtered} onIssueSelect={setSelectedIssue} />
+            )}
+          </div>
+          
           {/* Issue Panel Overlay */}
           {selectedIssue && (
             <motion.div

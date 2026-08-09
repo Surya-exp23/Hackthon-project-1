@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import NextTopLoader from 'nextjs-toploader';
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
@@ -22,6 +23,17 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.variable} ${playfair.variable}`}>
+        <NextTopLoader 
+          color="var(--accent)" 
+          initialPosition={0.08} 
+          crawlSpeed={200} 
+          height={3} 
+          crawl={true} 
+          showSpinner={false} 
+          easing="ease" 
+          speed={200} 
+          shadow="0 0 10px var(--accent),0 0 5px var(--accent)" 
+        />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AuthProvider>
             {children}
