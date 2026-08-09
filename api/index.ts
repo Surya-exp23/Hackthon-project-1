@@ -8,15 +8,15 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import authRoutes from './routes/auth';
-import uploadRoutes from './routes/upload';
-import reportRoutes from './routes/reports';
-import adminRoutes from './routes/admin';
-import analyticsRoutes from './routes/analytics';
-import mapRoutes from './routes/map';
-import notificationsRoutes from './routes/notifications';
-import { errorHandler } from './middleware/errorHandler';
-import { logger } from './utils/logger';
+import authRoutes from '../server/routes/auth';
+import uploadRoutes from '../server/routes/upload';
+import reportRoutes from '../server/routes/reports';
+import adminRoutes from '../server/routes/admin';
+import analyticsRoutes from '../server/routes/analytics';
+import mapRoutes from '../server/routes/map';
+import notificationsRoutes from '../server/routes/notifications';
+import { errorHandler } from '../server/middleware/errorHandler';
+import { logger } from '../server/utils/logger';
 
 const app = express();
 

@@ -3,11 +3,11 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
-import User from '../api/models/User';
-import Report from '../api/models/Report';
-import ReportUpdate from '../api/models/ReportUpdate';
-import Notification from '../api/models/Notification';
-import { calculatePriorityScore, getLocationRiskForCategory } from '../api/services/priorityService';
+import User from '../server/models/User';
+import Report from '../server/models/Report';
+import ReportUpdate from '../server/models/ReportUpdate';
+import Notification from '../server/models/Notification';
+import { calculatePriorityScore, getLocationRiskForCategory } from '../server/services/priorityService';
 
 dotenv.config();
 
