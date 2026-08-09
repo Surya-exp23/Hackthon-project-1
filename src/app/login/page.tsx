@@ -12,7 +12,7 @@ function AuthContent() {
   const { login, register } = useAuth();
   
   const [mode, setMode] = useState<'login' | 'register'>(
-    searchParams.get('mode') === 'register' ? 'register' : 'login'
+    searchParams?.get('mode') === 'register' ? 'register' : 'login'
   );
   
   const [name, setName] = useState('');
@@ -26,7 +26,7 @@ function AuthContent() {
 
   // Update mode if URL changes
   useEffect(() => {
-    const queryMode = searchParams.get('mode');
+    const queryMode = searchParams?.get('mode');
     if (queryMode === 'register' || queryMode === 'login') {
       setMode(queryMode);
       setError('');
