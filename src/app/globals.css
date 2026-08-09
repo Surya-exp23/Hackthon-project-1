@@ -317,3 +317,47 @@ body {
 .leaflet-popup-tip { background: var(--surface) !important; }
 .leaflet-bar a { background: var(--surface) !important; color: var(--text-primary) !important; border-color: var(--border) !important; }
 .leaflet-bar a:hover { background: var(--surface-2) !important; }
+
+/* ==========================================
+   Responsive Utilities (Mobile Retrofit)
+   ========================================== */
+@media (max-width: 768px) {
+  /* Grid overwrites */
+  .md\:grid-cols-1 { grid-template-columns: 1fr !important; }
+  .md\:flex-col { flex-direction: column !important; }
+  .md\:flex-col-reverse { flex-direction: column-reverse !important; }
+  
+  /* Visibility */
+  .md\:hidden { display: none !important; }
+  .md\:block { display: block !important; }
+  
+  /* Layout constraints */
+  .md\:w-full { width: 100% !important; }
+  .md\:h-auto { height: auto !important; }
+  .md\:p-4 { padding: 16px !important; }
+  .md\:p-6 { padding: 24px !important; }
+  .md\:px-4 { padding-left: 16px !important; padding-right: 16px !important; }
+  .md\:ml-0 { margin-left: 0 !important; }
+  .md\:mt-4 { margin-top: 16px !important; }
+  .md\:mt-16 { margin-top: 64px !important; }
+  
+  /* Typography & Alignment */
+  .md\:text-4xl { font-size: 32px !important; }
+  .md\:text-center { text-align: center !important; }
+  .md\:items-center { align-items: center !important; }
+  
+  /* Sidebar */
+  .mobile-sidebar {
+    position: fixed !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100 !important;
+  }
+  .mobile-sidebar.open {
+    transform: translateX(0);
+  }
+  .mobile-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+}

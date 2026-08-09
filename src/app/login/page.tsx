@@ -3,7 +3,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { MapPin, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { MapPin, Eye, EyeOff, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 function AuthContent() {
@@ -39,12 +39,20 @@ function AuthContent() {
     setLoading(true);
     
     try {
+      let authenticatedUser;
       if (mode === 'login') {
-        await login(email, password);
+        authenticatedUser = await login(email, password);
       } else {
-        await register(name, email, password, role);
+        authenticatedUser = await register(name, email, password, role);
       }
-      router.push('/dashboard');
+      
+      if (authenticatedUser.role === 'admin') {
+        router.push('/admin');
+      } else if (authenticatedUser.role === 'department') {
+        router.push('/department');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err: any) {
       setError(err?.message || (mode === 'login' ? 'Invalid email or password' : 'Failed to create account'));
     } finally {
@@ -61,6 +69,7 @@ function AuthContent() {
 
   return (
     <div style={{ width: '100%', maxWidth: 420 }}>
+
       {/* Logo */}
       <div style={{ textAlign: 'center', marginBottom: 36 }}>
         <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
@@ -221,6 +230,12 @@ export default function UnifiedAuthPage() {
       <div style={{ position: 'absolute', top: '20%', left: '30%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
       <div style={{ position: 'absolute', bottom: '20%', right: '30%', width: 300, height: 300, borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,108,246,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
       
+      {/* Absolute Back Button */}
+      <Link href="/" style={{ position: 'absolute', top: 32, left: 32, display: 'inline-flex', alignItems: 'center', gap: 6, textDecoration: 'none', color: 'var(--text-secondary)', fontSize: 14, fontWeight: 500, transition: 'color 0.15s ease', zIndex: 10 }} onMouseEnter={e => e.currentTarget.style.color = 'var(--text-primary)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-secondary)'}>
+        <ArrowLeft size={16} />
+        Back to Home
+      </Link>
+
       <Suspense fallback={<div style={{ width: 420, height: 400 }} />}>
         <motion.div
           initial={{ opacity: 0, y: 24 }}

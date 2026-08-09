@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MapPin, Plus, Bell, LogOut, Map, List, User, AlertTriangle, CheckCircle2, Clock, TrendingUp } from 'lucide-react';
+import { MapPin, Plus, Bell, LogOut, Map, List, User, AlertTriangle, CheckCircle2, Clock, TrendingUp, Menu, X } from 'lucide-react';
 import { apiClient } from '@/lib/apiClient';
 import { useAuth } from '@/context/AuthContext';
 import { PriorityGauge } from '@/components/ui/PriorityGauge';
@@ -60,16 +60,19 @@ function StatCard({ value, label, icon, color }: any) {
 }
 
 export default function DashboardPage() {
-  const { user, logout } = useAuth();
+  const { user, logout, loading: authLoading } = useAuth();
   const router = useRouter();
   const [reports, setReports] = useState<any[]>([]);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showNotifs, setShowNotifs] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
+    if (authLoading) return;
     if (!user) { router.push('/login'); return; }
+    if (user.role === 'admin' || user.role === 'department') { router.push('/admin'); return; }
     const fetchData = async () => {
       try {
         const [rData, nData] = await Promise.all([
@@ -88,7 +91,9 @@ export default function DashboardPage() {
       }
     };
     fetchData();
-  }, [user]);
+  }, [user, authLoading, router]);
+
+  if (authLoading) return null;
 
   const handleLogout = async () => {
     await logout();
@@ -105,12 +110,27 @@ export default function DashboardPage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column' }}>
       {/* Sidebar navigation */}
       <div style={{ display: 'flex', minHeight: '100vh' }}>
+        
+        {/* Mobile Sidebar Overlay */}
+        {isSidebarOpen && (
+          <div 
+            className="md:block" 
+            style={{ display: 'none', position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 90 }}
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
         {/* Sidebar */}
-        <aside style={{ width: 220, flexShrink: 0, background: 'var(--surface)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', padding: '24px 16px', position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 30 }}>
-          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', marginBottom: 32 }}>
-            <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 30, height: 30 }} />
-            <span style={{ fontWeight: 800, fontSize: 16 }}>CivicLens</span>
-          </Link>
+        <aside className={`mobile-sidebar ${isSidebarOpen ? 'open' : ''}`} style={{ width: 220, flexShrink: 0, background: 'var(--surface)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', padding: '24px 16px', position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 100 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
+            <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+              <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 30, height: 30 }} />
+              <span style={{ fontWeight: 800, fontSize: 16 }}>CivicLens</span>
+            </Link>
+            <button className="md:block" style={{ display: 'none', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer' }} onClick={() => setIsSidebarOpen(false)}>
+              <X size={20} />
+            </button>
+          </div>
 
           <nav style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
             {[
@@ -147,12 +167,19 @@ export default function DashboardPage() {
         </aside>
 
         {/* Main content */}
-        <main style={{ flex: 1, marginLeft: 220, padding: '32px', overflowY: 'auto' }}>
-          {/* Top bar */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
-            <div>
-              <h1 style={{ fontSize: 24, fontWeight: 800 }}>{greeting}, {user?.name?.split(' ')[0]} 👋</h1>
-              <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Here's an overview of your civic activity.</p>
+        <main className="mobile-main" style={{ flex: 1, marginLeft: 220, padding: '32px 40px' }}>
+          {/* Header */}
+          <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 40 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <button className="md:block" style={{ display: 'none', background: 'none', border: 'none', color: 'var(--text-primary)', cursor: 'pointer' }} onClick={() => setIsSidebarOpen(true)}>
+                <Menu size={24} />
+              </button>
+              <div>
+                <h1 style={{ fontFamily: 'var(--font-playfair)', fontSize: 28, fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 4 }}>
+                  {greeting}, {user?.name?.split(' ')[0]}
+                </h1>
+                <p style={{ color: 'var(--text-secondary)', fontSize: 14 }}>Here's the status of your reported issues.</p>
+              </div>
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               {/* Notification bell */}
@@ -185,10 +212,10 @@ export default function DashboardPage() {
                 New Report
               </Link>
             </div>
-          </div>
+          </header>
 
           {/* Stats row */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
+          <div className="md:grid-cols-1 md:mt-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 32 }}>
             <StatCard value={reports.length} label="Total Reports" icon={<AlertTriangle size={20} color="var(--accent)" />} color="var(--accent)" />
             <StatCard value={pending} label="In Progress" icon={<Clock size={20} color="var(--medium)" />} color="var(--medium)" />
             <StatCard value={resolved} label="Resolved" icon={<CheckCircle2 size={20} color="var(--low)" />} color="var(--low)" />
@@ -213,7 +240,7 @@ export default function DashboardPage() {
                 <Link href="/report" className="btn btn-primary" style={{ display: 'inline-flex' }}>Report an Issue</Link>
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
+              <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
                 {reports.map(r => <ReportCard key={r._id} report={r} />)}
               </div>
             )}

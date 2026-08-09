@@ -13,8 +13,8 @@ interface User {
 interface AuthContextType {
   user: User | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string, role?: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<User>;
+  register: (name: string, email: string, password: string, role?: string) => Promise<User>;
   logout: () => Promise<void>;
 }
 
@@ -35,12 +35,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await apiClient.post('/auth/login', { email, password });
     apiClient.setToken(data.token);
     setUser(data.user);
+    return data.user;
   };
 
   const register = async (name: string, email: string, password: string, role?: string) => {
     const data = await apiClient.post('/auth/register', { name, email, password, role });
     apiClient.setToken(data.token);
     setUser(data.user);
+    return data.user;
   };
 
   const logout = async () => {

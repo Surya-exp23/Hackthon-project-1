@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 const SEVERITY_COLORS: Record<string, string> = {
@@ -26,6 +27,20 @@ interface LeafletMapProps {
   onIssueSelect: (issue: Issue | null) => void;
 }
 
+function MapBoundsFitter({ issues }: { issues: Issue[] }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (issues.length === 0) return;
+    const bounds = L.latLngBounds(issues.map(issue => [issue.lat, issue.lng]));
+    if (bounds.isValid()) {
+      map.flyToBounds(bounds, { padding: [50, 50], maxZoom: 16, duration: 1.5 });
+    }
+  }, [issues, map]);
+
+  return null;
+}
+
 export default function LeafletMap({ issues, onIssueSelect }: LeafletMapProps) {
   const color = (issue: Issue) =>
     issue.status === 'resolved' ? SEVERITY_COLORS.resolved : (SEVERITY_COLORS[issue.severity] || '#3B82F6');
@@ -40,6 +55,7 @@ export default function LeafletMap({ issues, onIssueSelect }: LeafletMapProps) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
       />
+      <MapBoundsFitter issues={issues} />
       {issues.map(issue => (
         <CircleMarker
           key={issue.id}

@@ -122,7 +122,7 @@ export default function ExplorePage() {
             transition={{ type: 'spring', stiffness: 300, damping: 35 }}
             style={{
               position: 'absolute', right: 16, top: 16, bottom: 16,
-              width: 300,
+              width: 'calc(100% - 32px)', maxWidth: 300,
               background: 'var(--surface)',
               border: '1px solid var(--border)',
               borderRadius: 'var(--radius-lg)',

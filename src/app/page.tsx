@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { MapPin, Zap, Shield, BarChart2, Camera, Brain, Map, CheckCircle2, ArrowRight, Users, Clock, TrendingUp, AlertTriangle } from 'lucide-react';
+import { ArrowRight, MapPin, Camera, Brain, Zap, Shield, BarChart2, CheckCircle2, ChevronRight, Activity, Map, AlertTriangle, Clock, Users, TrendingUp } from 'lucide-react';
 
 // Animated counter hook
 function useCounter(target: number, duration = 1200) {
@@ -44,7 +44,7 @@ function IssueCard({ title, category, priority, severity, delay, x, y }: any) {
       transition={{ delay, duration: 0.6, y: { repeat: Infinity, duration: 4 + delay, ease: 'easeInOut' } }}
       style={{
         position: 'absolute', left: x, top: y,
-        background: 'rgba(20, 23, 28, 0.9)',
+        background: 'var(--surface-alpha)',
         backdropFilter: 'blur(16px)',
         border: '1px solid var(--border)',
         borderRadius: 'var(--radius-md)',
@@ -96,6 +96,17 @@ function MapDot({ x, y, color, delay }: any) {
 }
 
 export default function LandingPage() {
+  const [activeTab, setActiveTab] = useState('citizens');
+  const [wordIndex, setWordIndex] = useState(0);
+  const cycleWords = ['UNDERSTAND', 'INNOVATE', 'DESIGN'];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex(prev => (prev + 1) % cycleWords.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
   const stats = [
     { target: 2840, suffix: '+', label: 'Issues Logged', icon: <AlertTriangle size={20} color="var(--critical)" /> },
     { target: 1920, suffix: '', label: 'Resolved This Month', icon: <CheckCircle2 size={20} color="var(--low)" /> },
@@ -137,19 +148,17 @@ export default function LandingPage() {
       {/* Navbar */}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, height: 64,
-        display: 'flex', alignItems: 'center', padding: '0 40px',
+        display: 'flex', alignItems: 'center', padding: '0 20px',
         background: 'var(--surface-alpha)',
         backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--border-subtle)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg, var(--accent), var(--accent-2))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <MapPin size={16} color="white" />
-          </div>
+          <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 32, height: 32 }} />
           <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>CivicLens</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Link href="/explore" className="btn btn-ghost btn-sm">Explore City</Link>
+          <Link href="/explore" className="btn btn-ghost btn-sm md:hidden">Explore City</Link>
           <Link href="/login" className="btn btn-ghost btn-sm">Log in</Link>
           <Link href="/report" className="btn btn-primary btn-sm">Report Issue</Link>
         </div>
@@ -161,9 +170,9 @@ export default function LandingPage() {
         <div style={{ position: 'absolute', top: '10%', left: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', bottom: '10%', right: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,108,246,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 40px', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
+        <div className="md:grid-cols-1 md:p-6 md:mt-16" style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 40px', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
           {/* Left: Headline */}
-          <div>
+          <div className="md:text-center md:items-center md:flex-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -178,10 +187,24 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.03em', marginBottom: 24 }}
+              className="md:text-4xl md:text-center"
+              style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.03em', marginBottom: 24, textAlign: 'center' }}
             >
               <span>SEE THE PROBLEM.</span><br />
-              <span style={{ color: 'var(--accent)' }}>UNDERSTAND</span><br />
+              <div style={{ position: 'relative', display: 'inline-block', height: '1.05em', overflow: 'hidden', width: '9.2em', verticalAlign: 'bottom' }}>
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={wordIndex}
+                    initial={{ y: 50, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -50, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "easeOut" }}
+                    style={{ color: 'var(--accent)', position: 'absolute', left: 0, width: '100%', textAlign: 'center' }}
+                  >
+                    {cycleWords[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </div><br />
               <span>THE IMPACT.</span>
             </motion.h1>
 
@@ -246,7 +269,7 @@ export default function LandingPage() {
 
       {/* Stats Strip */}
       <section style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--surface)', padding: '32px 40px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32 }}>
+        <div className="md:grid-cols-1 md:p-6" style={{ maxWidth: 1280, margin: '0 auto', padding: '0 40px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
           {stats.map((s, i) => {
             const { count, ref } = useCounter(s.target);
             return (
@@ -268,14 +291,14 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section style={{ padding: '100px 40px' }}>
+      <section className="md:p-6" style={{ padding: '120px 40px', borderTop: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            style={{ textAlign: 'center', marginBottom: 64 }}
+            className="md:text-center md:items-center" style={{ marginBottom: 60, maxWidth: 600 }}
           >
             <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 12 }}>How It Works</p>
             <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.02em' }}>
@@ -283,7 +306,7 @@ export default function LandingPage() {
             </h2>
           </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, position: 'relative' }}>
+          <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, position: 'relative' }}>
             {/* connector line */}
             <div style={{ position: 'absolute', top: 32, left: '12.5%', right: '12.5%', height: 1, background: 'linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent)', zIndex: 0 }} />
 
@@ -309,8 +332,9 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Highlights */}
-      <section style={{ padding: '0 40px 100px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
+      <section className="md:p-6" style={{ padding: '120px 40px', background: 'var(--surface)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
           {features.map((f, i) => (
             <motion.div
               key={i}
@@ -326,6 +350,7 @@ export default function LandingPage() {
               <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.65 }}>{f.desc}</p>
             </motion.div>
           ))}
+          </div>
         </div>
       </section>
 
@@ -370,11 +395,9 @@ export default function LandingPage() {
       <footer style={{ borderTop: '1px solid var(--border)', padding: '28px 40px' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 6, background: 'linear-gradient(135deg, var(--accent), var(--accent-2))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MapPin size={14} color="white" />
-            </div>
+            <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 28, height: 28 }} />
             <span style={{ fontWeight: 700 }}>CivicLens</span>
-            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>— Built with different vision ❤️</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>— Built to solve modern problems</span>
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
             {['Explore', 'Admin', 'GitHub'].map(l => (

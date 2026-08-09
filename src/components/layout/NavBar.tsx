@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
 export function Navbar() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -30,8 +30,8 @@ export function Navbar() {
       borderBottom: '1px solid var(--border-subtle)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
-        <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 32, height: 32 }} />
-        <Link href={user ? '/dashboard' : '/'} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <Link href={user ? (user.role === 'admin' ? '/admin' : user.role === 'department' ? '/department' : '/dashboard') : '/'} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', color: 'inherit' }}>
+          <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 32, height: 32 }} />
           <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
             CivicLens
           </span>
@@ -42,7 +42,9 @@ export function Navbar() {
         <Link href="/explore" className="btn btn-ghost btn-sm">
           Explore City
         </Link>
-        {user ? (
+        {loading ? (
+          <div className="btn btn-ghost btn-sm" style={{ visibility: 'hidden' }}>Log in</div>
+        ) : user ? (
           <Link href="/profile" className="btn btn-ghost btn-sm">
             Profile
           </Link>
