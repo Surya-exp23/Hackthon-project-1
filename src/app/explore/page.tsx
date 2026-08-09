@@ -48,8 +48,9 @@ export default function ExplorePage() {
       {/* Top nav */}
       <nav style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 40, flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 26, height: 26 }} />
-          <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-primary)' }}>CivicLens</span>
+          <button onClick={() => router.back()} className="btn btn-ghost btn-sm" style={{ gap: 6, paddingLeft: 0 }}>
+            <ArrowLeft size={16} /> <span style={{ fontWeight: 600 }}>Back</span>
+          </button>
         </div>
 
         {/* Filter chips */}
@@ -98,9 +99,6 @@ export default function ExplorePage() {
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--low)' }} />
             {filtered.length} issues
           </span>
-          <button onClick={() => router.back()} className="btn btn-ghost btn-sm" style={{ gap: 6 }}>
-            <ArrowLeft size={14} /> Back
-          </button>
           <Link href="/report" className="btn btn-primary btn-sm">+ Report</Link>
         </div>
       </nav>
