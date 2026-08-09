@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:api": "tsx watch api/index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
