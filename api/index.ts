@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
+import uploadRoutes from './routes/upload';
+import reportRoutes from './routes/reports';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 
@@ -35,6 +37,8 @@ connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Base route for healthcheck
 app.get('/api/health', (req, res) => {
