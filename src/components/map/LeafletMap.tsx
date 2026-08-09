@@ -52,8 +52,13 @@ export default function LeafletMap({ issues, onIssueSelect }: LeafletMapProps) {
       style={{ width: '100%', height: '100%' }}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://openstreetmap.org">OpenStreetMap</a>'
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        maxNativeZoom={19}
+        maxZoom={22}
+        keepBuffer={4}
+        updateWhenZooming={false}
+        updateWhenIdle={true}
       />
       <MapBoundsFitter issues={issues} />
       {issues.map(issue => (

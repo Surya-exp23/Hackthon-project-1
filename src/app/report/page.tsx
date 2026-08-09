@@ -340,6 +340,38 @@ function StepLocation({ onNext, onBack }: any) {
   const [detecting, setDetecting] = useState(false);
   const [coords, setCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState('');
+  
+  // Autosuggest states
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const searchAddress = (query: string) => {
+    setAddress(query);
+    setSuggestions([]);
+    
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+    if (!query.trim() || query.length < 3) return;
+
+    setIsSearching(true);
+    searchTimeout.current = setTimeout(async () => {
+      try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5`);
+        const data = await res.json();
+        setSuggestions(data);
+      } catch (err) {
+        console.error('Failed to fetch suggestions:', err);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 500);
+  };
+
+  const selectSuggestion = (s: any) => {
+    setAddress(s.display_name);
+    setCoords({ lat: parseFloat(s.lat), lng: parseFloat(s.lon) });
+    setSuggestions([]);
+  };
 
   const detect = () => {
     setDetecting(true);
@@ -372,9 +404,67 @@ function StepLocation({ onNext, onBack }: any) {
         }
       </button>
 
-      <div style={{ marginBottom: 16 }}>
+      <div style={{ marginBottom: 16, position: 'relative' }}>
         <label style={{ display: 'block', fontSize: 13, fontWeight: 600, marginBottom: 6, color: 'var(--text-secondary)' }}>Or enter address / area name</label>
-        <input className="input" value={address} onChange={e => setAddress(e.target.value)} placeholder="e.g. MG Road, Jodhpur" />
+        <div style={{ position: 'relative' }}>
+          <input 
+            className="input" 
+            value={address} 
+            onChange={e => searchAddress(e.target.value)} 
+            placeholder="e.g. MG Road, Jodhpur" 
+          />
+          {isSearching && (
+            <div style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)' }}>
+              <Loader2 size={14} color="var(--text-muted)" style={{ animation: 'spin 1s linear infinite' }} />
+            </div>
+          )}
+        </div>
+        
+        <AnimatePresence>
+          {suggestions.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 4px)',
+                left: 0,
+                right: 0,
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-md)',
+                boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+                zIndex: 50,
+                maxHeight: 200,
+                overflowY: 'auto'
+              }}
+            >
+              {suggestions.map((s: any, i: number) => (
+                <div
+                  key={i}
+                  onClick={() => selectSuggestion(s)}
+                  style={{
+                    padding: '10px 12px',
+                    fontSize: 13,
+                    borderBottom: i < suggestions.length - 1 ? '1px solid var(--border)' : 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: 8,
+                    color: 'var(--text-primary)',
+                    transition: 'background 0.2s'
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'var(--surface-hover)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                >
+                  <MapPin size={14} color="var(--accent)" style={{ marginTop: 2, flexShrink: 0 }} />
+                  <span>{s.display_name}</span>
+                </div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {error && <p style={{ color: 'var(--medium)', fontSize: 13, marginBottom: 12 }}>{error}</p>}
