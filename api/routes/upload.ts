@@ -5,12 +5,7 @@ import { authenticate } from '../middleware/auth';
 
 const router = Router();
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+// Cloudinary is configured inside the route handler to guarantee env vars are loaded
 
 // Configure Multer for memory storage
 const storage = multer.memoryStorage();
@@ -30,6 +25,11 @@ const upload = multer({
 
 router.post('/', authenticate, upload.single('image'), async (req, res) => {
   try {
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    });
     if (!req.file) {
       return res.status(400).json({ error: { code: 'BAD_REQUEST', message: 'No image file provided' } });
     }

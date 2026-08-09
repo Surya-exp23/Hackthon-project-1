@@ -138,7 +138,7 @@ export default function LandingPage() {
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, height: 64,
         display: 'flex', alignItems: 'center', padding: '0 40px',
-        background: 'rgba(11, 13, 16, 0.85)',
+        background: 'var(--surface-alpha)',
         backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--border-subtle)',
       }}>
@@ -178,7 +178,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              style={{ fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.03em', marginBottom: 24 }}
+              style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.03em', marginBottom: 24 }}
             >
               <span>SEE THE PROBLEM.</span><br />
               <span style={{ color: 'var(--accent)' }}>UNDERSTAND</span><br />
@@ -278,7 +278,7 @@ export default function LandingPage() {
             style={{ textAlign: 'center', marginBottom: 64 }}
           >
             <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 12 }}>How It Works</p>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.02em' }}>
               From photo to action in 15 seconds
             </h2>
           </motion.div>
@@ -286,7 +286,7 @@ export default function LandingPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, position: 'relative' }}>
             {/* connector line */}
             <div style={{ position: 'absolute', top: 32, left: '12.5%', right: '12.5%', height: 1, background: 'linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent)', zIndex: 0 }} />
-            
+
             {howItWorks.map((h, i) => (
               <motion.div
                 key={i}
@@ -345,7 +345,7 @@ export default function LandingPage() {
               textAlign: 'center',
             }}
           >
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 16 }}>
+            <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 16 }}>
               See something broken?<br />
               <span style={{ color: 'var(--accent)' }}>Report it in 30 seconds.</span>
             </h2>
@@ -374,7 +374,7 @@ export default function LandingPage() {
               <MapPin size={14} color="white" />
             </div>
             <span style={{ fontWeight: 700 }}>CivicLens</span>
-            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>— Built for Hack Devengers 1.0</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: 13 }}>— Built with different vision ❤️</span>
           </div>
           <div style={{ display: 'flex', gap: 20 }}>
             {['Explore', 'Admin', 'GitHub'].map(l => (

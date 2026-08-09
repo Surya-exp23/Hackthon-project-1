@@ -107,10 +107,8 @@ export default function DashboardPage() {
       <div style={{ display: 'flex', minHeight: '100vh' }}>
         {/* Sidebar */}
         <aside style={{ width: 220, flexShrink: 0, background: 'var(--surface)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', padding: '24px 16px', position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 30 }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', marginBottom: 32 }}>
-            <div style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg, var(--accent), var(--accent-2))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <MapPin size={14} color="white" />
-            </div>
+          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', marginBottom: 32 }}>
+            <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 30, height: 30 }} />
             <span style={{ fontWeight: 800, fontSize: 16 }}>CivicLens</span>
           </Link>
 

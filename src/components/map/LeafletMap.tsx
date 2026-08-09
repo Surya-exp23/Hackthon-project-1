@@ -50,10 +50,18 @@ export default function LeafletMap({ issues, onIssueSelect }: LeafletMapProps) {
           weight={2}
           opacity={0.9}
           fillOpacity={issue.status === 'resolved' ? 0.5 : 0.75}
-          eventHandlers={{ click: () => onIssueSelect(issue) }}
+          eventHandlers={{ 
+            click: () => onIssueSelect(issue),
+            mouseover: (e) => {
+              e.target.openPopup();
+            },
+            mouseout: (e) => {
+              e.target.closePopup();
+            }
+          }}
         >
           <Popup>
-            <div style={{ fontFamily: 'Inter, sans-serif', minWidth: 160 }}>
+            <div style={{ fontFamily: 'var(--font-outfit), sans-serif', minWidth: 160 }}>
               <p style={{ fontWeight: 700, marginBottom: 4, textTransform: 'capitalize' }}>
                 {(issue.category || 'Issue').replace('_', ' ')}
               </p>

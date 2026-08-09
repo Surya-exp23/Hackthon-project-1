@@ -46,9 +46,7 @@ export default function IssueDetailPage() {
       {/* Minimal navbar */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, height: 64, display: 'flex', alignItems: 'center', padding: '0 32px', background: 'rgba(11,13,16,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border-subtle)' }}>
         <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: 'linear-gradient(135deg, var(--accent), var(--accent-2))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <MapPin size={14} color="white" />
-          </div>
+          <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 28, height: 28 }} />
           <span style={{ fontWeight: 800, fontSize: 16 }}>CivicLens</span>
         </Link>
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>

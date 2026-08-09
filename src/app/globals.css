@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ==========================================
    CivicLens Global Design System
@@ -47,10 +46,13 @@
   --shadow-glow-critical: 0 0 20px rgba(239, 68, 68, 0.20);
 
   /* Font */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-outfit), system-ui, -apple-system, sans-serif;
+  
+  /* Alpha Backgrounds */
+  --surface-alpha: rgba(20, 23, 28, 0.85);
 }
 
-[data-theme="light"] {
+.light {
   --bg: #F4F6F9;
   --surface: #FFFFFF;
   --surface-2: #F2F3F5;
@@ -62,6 +64,7 @@
   --text-muted: #9AA1AC;
   --accent-dim: rgba(59, 130, 246, 0.08);
   --shadow-elevated: 0 8px 24px rgba(15, 15, 20, 0.08);
+  --surface-alpha: rgba(255, 255, 255, 0.85);
 }
 
 /* ==========================================

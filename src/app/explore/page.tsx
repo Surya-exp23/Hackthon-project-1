@@ -45,11 +45,9 @@ export default function ExplorePage() {
     <div style={{ height: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Top nav */}
       <nav style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 40, flexShrink: 0 }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
-          <div style={{ width: 26, height: 26, borderRadius: 6, background: 'linear-gradient(135deg, var(--accent), var(--accent-2))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <MapPin size={13} color="white" />
-          </div>
-          <span style={{ fontWeight: 800, fontSize: 15 }}>CivicLens</span>
+        <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+          <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 26, height: 26 }} />
+          <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-primary)' }}>CivicLens</span>
         </Link>
 
         {/* Filter chips */}
@@ -57,26 +55,39 @@ export default function ExplorePage() {
           {CATEGORIES.map(c => (
             <button key={c} onClick={() => setSelectedCategory(c)}
               style={{
+                position: 'relative',
                 padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: 'pointer',
                 whiteSpace: 'nowrap', border: '1px solid',
-                background: selectedCategory === c ? 'var(--accent)' : 'transparent',
                 color: selectedCategory === c ? 'white' : 'var(--text-secondary)',
-                borderColor: selectedCategory === c ? 'var(--accent)' : 'var(--border)',
-                transition: 'all 0.15s ease',
+                borderColor: selectedCategory === c ? 'transparent' : 'var(--border)',
+                background: 'transparent',
+                transition: 'color 0.2s ease',
               }}
-            >{c === 'all' ? 'All Categories' : c.replace('_', ' ')}</button>
+            >
+              {selectedCategory === c && (
+                <motion.div
+                  layoutId="activeCategory"
+                  style={{ position: 'absolute', inset: 0, background: 'var(--accent)', borderRadius: 999, zIndex: -1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+              {c === 'all' ? 'All Categories' : c.replace('_', ' ')}
+            </button>
           ))}
           <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
           {STATUSES.filter(s => s !== 'all').map(s => (
             <button key={s} onClick={() => setSelectedStatus(s === selectedStatus ? 'all' : s)}
               style={{
+                position: 'relative',
                 padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: 'pointer',
                 whiteSpace: 'nowrap', border: '1px solid',
-                background: selectedStatus === s ? 'var(--surface-2)' : 'transparent',
                 color: selectedStatus === s ? 'var(--text-primary)' : 'var(--text-muted)',
                 borderColor: selectedStatus === s ? 'var(--border)' : 'transparent',
+                background: selectedStatus === s ? 'var(--surface-2)' : 'transparent',
               }}
-            >{s.replace('_', ' ')}</button>
+            >
+              {s.replace('_', ' ')}
+            </button>
           ))}
         </div>
 
@@ -117,7 +128,7 @@ export default function ExplorePage() {
               borderRadius: 'var(--radius-lg)',
               boxShadow: 'var(--shadow-elevated)',
               overflow: 'auto',
-              zIndex: 30,
+              zIndex: 1000,
               padding: 20,
             }}
           >

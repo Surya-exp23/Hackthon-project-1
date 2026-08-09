@@ -98,12 +98,13 @@ export const createReport = asyncHandler(async (req: any, res: Response) => {
 
 // List Reports (with filtering)
 export const getReports = asyncHandler(async (req: Request, res: Response) => {
-  const { status, category, severity, near, radius } = req.query;
+  const { status, category, severity, near, radius, userId } = req.query;
   const filter: any = { duplicateOf: { $exists: false } }; // Return canonical only
 
   if (status) filter.status = status;
   if (category) filter.category = category;
   if (severity) filter.severity = severity;
+  if (userId) filter.userId = userId;
   
   if (near && radius) {
     const [lng, lat] = (near as string).split(',').map(Number);

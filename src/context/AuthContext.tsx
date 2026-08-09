@@ -7,6 +7,7 @@ interface User {
   name: string;
   email: string;
   role: 'citizen' | 'admin' | 'department';
+  civicScore?: number;
 }
 
 interface AuthContextType {

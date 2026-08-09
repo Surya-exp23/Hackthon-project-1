@@ -1,7 +1,18 @@
+'use client';
 import Link from 'next/link';
 import { MapPin, GitBranch } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
+import { useAuth } from '@/context/AuthContext';
 
 export function Navbar() {
+  const { user } = useAuth();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <nav style={{
       position: 'fixed',
@@ -13,32 +24,33 @@ export function Navbar() {
       display: 'flex',
       alignItems: 'center',
       padding: '0 32px',
-      background: 'rgba(11, 13, 16, 0.85)',
+      background: 'var(--surface-alpha)',
       backdropFilter: 'blur(12px)',
       WebkitBackdropFilter: 'blur(12px)',
       borderBottom: '1px solid var(--border-subtle)',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
-        <div style={{
-          width: 32, height: 32,
-          borderRadius: 8,
-          background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <MapPin size={16} color="white" />
-        </div>
-        <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
-          CivicLens
-        </span>
+        <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 32, height: 32 }} />
+        <Link href={user ? '/dashboard' : '/'} style={{ textDecoration: 'none', color: 'inherit' }}>
+          <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>
+            CivicLens
+          </span>
+        </Link>
       </div>
       
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <Link href="/explore" className="btn btn-ghost btn-sm">
           Explore City
         </Link>
-        <Link href="/login" className="btn btn-ghost btn-sm">
-          Log in
-        </Link>
+        {user ? (
+          <Link href="/profile" className="btn btn-ghost btn-sm">
+            Profile
+          </Link>
+        ) : (
+          <Link href="/login" className="btn btn-ghost btn-sm">
+            Log in
+          </Link>
+        )}
         <Link href="/report" className="btn btn-primary btn-sm">
           Report Issue
         </Link>
@@ -56,14 +68,7 @@ export function Footer() {
     }}>
       <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{
-            width: 28, height: 28,
-            borderRadius: 6,
-            background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <MapPin size={14} color="white" />
-          </div>
+          <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 28, height: 28 }} />
           <span style={{ fontWeight: 700, fontSize: 15 }}>CivicLens</span>
           <span style={{ color: 'var(--text-muted)', fontSize: 13, marginLeft: 8 }}>
             AI-Powered Civic Intelligence

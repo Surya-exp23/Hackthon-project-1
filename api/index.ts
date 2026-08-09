@@ -1,8 +1,13 @@
+import dns from 'dns';
+dns.setServers(['1.1.1.1', '8.8.8.8']);
+
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+dotenv.config();
+
 import authRoutes from './routes/auth';
 import uploadRoutes from './routes/upload';
 import reportRoutes from './routes/reports';
@@ -12,9 +17,6 @@ import mapRoutes from './routes/map';
 import notificationsRoutes from './routes/notifications';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 
