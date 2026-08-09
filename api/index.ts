@@ -6,6 +6,10 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import uploadRoutes from './routes/upload';
 import reportRoutes from './routes/reports';
+import adminRoutes from './routes/admin';
+import analyticsRoutes from './routes/analytics';
+import mapRoutes from './routes/map';
+import notificationsRoutes from './routes/notifications';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 
@@ -39,6 +43,10 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/map', mapRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 // Base route for healthcheck
 app.get('/api/health', (req, res) => {
