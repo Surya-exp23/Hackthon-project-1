@@ -172,7 +172,7 @@ export default function LandingPage() {
 
         <div className="md:grid-cols-1 md:p-6 md:mt-16" style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 40px', width: '100%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, alignItems: 'center' }}>
           {/* Left: Headline */}
-          <div className="md:text-center md:items-center md:flex-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <div className="md:text-center md:items-center md:flex-col" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -212,7 +212,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              style={{ fontSize: 18, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 36, maxWidth: 480 }}
+              style={{ fontSize: 18, color: 'var(--text-secondary)', lineHeight: 1.7, marginBottom: 36, maxWidth: 480, textAlign: 'center' }}
             >
               One photo converts a pothole, broken streetlight, or leaking drain into structured, prioritized, geo-located civic intelligence — routed to the right department instantly.
             </motion.p>
@@ -221,7 +221,7 @@ export default function LandingPage() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}
+              style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}
             >
               <Link href="/report" className="btn btn-primary btn-lg" style={{ gap: 10 }}>
                 <Camera size={18} />
