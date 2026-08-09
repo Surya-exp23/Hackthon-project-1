@@ -3,7 +3,8 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { MapPin, X, ExternalLink, Filter } from 'lucide-react';
+import { MapPin, X, ExternalLink, Filter, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/apiClient';
 
 // Dynamic import for Leaflet (SSR disabled)
@@ -21,6 +22,7 @@ const CATEGORIES = ['all', 'pothole', 'garbage_waste', 'streetlight', 'water_lea
 const STATUSES = ['all', 'open', 'assigned', 'in_progress', 'resolved'];
 
 export default function ExplorePage() {
+  const router = useRouter();
   const [issues, setIssues] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -45,10 +47,10 @@ export default function ExplorePage() {
     <div style={{ height: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Top nav */}
       <nav style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 40, flexShrink: 0 }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 26, height: 26 }} />
           <span style={{ fontWeight: 800, fontSize: 15, color: 'var(--text-primary)' }}>CivicLens</span>
-        </Link>
+        </div>
 
         {/* Filter chips */}
         <div style={{ flex: 1, display: 'flex', gap: 8, overflowX: 'auto', padding: '0 8px' }}>
@@ -92,10 +94,13 @@ export default function ExplorePage() {
         </div>
 
         <div style={{ flexShrink: 0, display: 'flex', gap: 8 }}>
-          <span style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, marginRight: 8 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--low)' }} />
             {filtered.length} issues
           </span>
+          <button onClick={() => router.back()} className="btn btn-ghost btn-sm" style={{ gap: 6 }}>
+            <ArrowLeft size={14} /> Back
+          </button>
           <Link href="/report" className="btn btn-primary btn-sm">+ Report</Link>
         </div>
       </nav>

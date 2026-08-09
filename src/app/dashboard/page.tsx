@@ -79,8 +79,8 @@ export default function DashboardPage() {
           apiClient.get('/reports'),
           apiClient.get('/notifications').catch(() => ({ notifications: [] })),
         ]);
-        // Filter user's reports
-        const myReports = rData.reports.filter((r: any) => r.userId?._id === user.id || r.userId === user.id);
+        // Filter user's reports securely by casting Mongoose ObjectIds to Strings
+        const myReports = rData.reports.filter((r: any) => String(r.userId?._id || r.userId) === String(user.id));
         setReports(myReports);
         setNotifications(nData.notifications || []);
         setUnreadCount((nData.notifications || []).filter((n: any) => !n.read).length);

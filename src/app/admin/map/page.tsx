@@ -57,10 +57,10 @@ export default function AdminMapPage() {
       {/* Admin Sidebar */}
       <aside style={{ width: 220, flexShrink: 0, background: 'var(--surface)', borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column', padding: '24px 16px', position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 30 }}>
         <div style={{ marginBottom: 8 }}>
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', marginBottom: 4 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
             <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 28, height: 28 }} />
             <span style={{ fontWeight: 800, fontSize: 15 }}>CivicLens</span>
-          </Link>
+          </div>
           <div style={{ display: 'inline-block', padding: '3px 10px', borderRadius: 999, background: 'var(--critical-dim)', border: '1px solid rgba(239,68,68,0.2)', marginBottom: 24 }}>
             <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--critical)', letterSpacing: '0.05em' }}>ADMIN PANEL</span>
           </div>
