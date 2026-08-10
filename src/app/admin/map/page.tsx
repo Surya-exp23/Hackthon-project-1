@@ -1,12 +1,13 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MapPin, TrendingUp, List, Map, BarChart2, LogOut, ExternalLink, X } from 'lucide-react';
+import { MapPin, TrendingUp, List, Map, BarChart2, LogOut, ExternalLink, X, Filter } from 'lucide-react';
 import { apiClient } from '@/lib/apiClient';
 import { useAuth } from '@/context/AuthContext';
+import { FilterDropdown } from '@/components/ui/FilterDropdown';
 
 const MapComponent = dynamic(() => import('@/components/map/LeafletMap'), { 
   ssr: false,
@@ -100,39 +101,20 @@ export default function AdminMapPage() {
         
         {/* Filters Top Bar */}
         <div style={{ padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', flex: 1 }}>
-            {CATEGORIES.map(c => (
-              <button key={c} onClick={() => setSelectedCategory(c)}
-                style={{
-                  position: 'relative', padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                  whiteSpace: 'nowrap', border: '1px solid', color: selectedCategory === c ? 'white' : 'var(--text-secondary)',
-                  borderColor: selectedCategory === c ? 'transparent' : 'var(--border)', background: 'transparent',
-                  transition: 'color 0.2s ease',
-                }}
-              >
-                {selectedCategory === c && (
-                  <motion.div layoutId="activeCategoryMap" style={{ position: 'absolute', inset: 0, background: 'var(--accent)', borderRadius: 999, zIndex: -1 }} transition={{ type: 'spring', stiffness: 400, damping: 30 }} />
-                )}
-                {c === 'all' ? 'All Categories' : c.replace('_', ' ')}
-              </button>
-            ))}
-            <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
-            {STATUSES.filter(s => s !== 'all').map(s => (
-              <button key={s} onClick={() => setSelectedStatus(s === selectedStatus ? 'all' : s)}
-                style={{
-                  padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: 'pointer', border: '1px solid',
-                  color: selectedStatus === s ? 'var(--text-primary)' : 'var(--text-muted)',
-                  borderColor: selectedStatus === s ? 'var(--border)' : 'transparent',
-                  background: selectedStatus === s ? 'var(--surface-2)' : 'transparent',
-                }}
-              >
-                {s.replace('_', ' ')}
-              </button>
-            ))}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+            <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>City Map</span>
           </div>
-          <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>
-            {filtered.length} issues mapped
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <FilterDropdown 
+              selectedCategory={selectedCategory} 
+              setSelectedCategory={setSelectedCategory} 
+              selectedStatus={selectedStatus} 
+              setSelectedStatus={setSelectedStatus} 
+            />
+            <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 600, flexShrink: 0 }}>
+              {filtered.length} issues mapped
+            </span>
+          </div>
         </div>
 
         {/* Map Area */}

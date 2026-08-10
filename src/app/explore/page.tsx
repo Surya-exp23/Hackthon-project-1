@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { MapPin, X, ExternalLink, Filter, ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/apiClient';
+import { FilterDropdown } from '@/components/ui/FilterDropdown';
 
 // Dynamic import for Leaflet (SSR disabled)
 const MapComponent = dynamic(() => import('@/components/map/LeafletMap'), { 
@@ -53,52 +54,19 @@ export default function ExplorePage() {
           </button>
         </div>
 
-        {/* Filter chips */}
-        <div style={{ flex: 1, display: 'flex', gap: 8, overflowX: 'auto', padding: '0 8px' }}>
-          {CATEGORIES.map(c => (
-            <button key={c} onClick={() => setSelectedCategory(c)}
-              style={{
-                position: 'relative',
-                padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                whiteSpace: 'nowrap', border: '1px solid',
-                color: selectedCategory === c ? 'white' : 'var(--text-secondary)',
-                borderColor: selectedCategory === c ? 'transparent' : 'var(--border)',
-                background: 'transparent',
-                transition: 'color 0.2s ease',
-              }}
-            >
-              {selectedCategory === c && (
-                <motion.div
-                  layoutId="activeCategory"
-                  style={{ position: 'absolute', inset: 0, background: 'var(--accent)', borderRadius: 999, zIndex: -1 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                />
-              )}
-              {c === 'all' ? 'All Categories' : c.replace('_', ' ')}
-            </button>
-          ))}
-          <div style={{ width: 1, background: 'var(--border)', margin: '0 4px' }} />
-          {STATUSES.filter(s => s !== 'all').map(s => (
-            <button key={s} onClick={() => setSelectedStatus(s === selectedStatus ? 'all' : s)}
-              style={{
-                position: 'relative',
-                padding: '5px 14px', borderRadius: 999, fontSize: 12, fontWeight: 600, cursor: 'pointer',
-                whiteSpace: 'nowrap', border: '1px solid',
-                color: selectedStatus === s ? 'var(--text-primary)' : 'var(--text-muted)',
-                borderColor: selectedStatus === s ? 'var(--border)' : 'transparent',
-                background: selectedStatus === s ? 'var(--surface-2)' : 'transparent',
-              }}
-            >
-              {s.replace('_', ' ')}
-            </button>
-          ))}
-        </div>
+        <div style={{ flex: 1 }} /> {/* Spacer */}
 
-        <div style={{ flexShrink: 0, display: 'flex', gap: 8 }}>
+        <div style={{ flexShrink: 0, display: 'flex', gap: 8, alignItems: 'center' }}>
           <span style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4, marginRight: 8 }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--low)' }} />
             {filtered.length} issues
           </span>
+          <FilterDropdown 
+            selectedCategory={selectedCategory} 
+            setSelectedCategory={setSelectedCategory} 
+            selectedStatus={selectedStatus} 
+            setSelectedStatus={setSelectedStatus} 
+          />
           <Link href="/report" className="btn btn-primary btn-sm">+ Report</Link>
         </div>
       </nav>
