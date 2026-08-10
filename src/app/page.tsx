@@ -290,40 +290,103 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works */}
-      <section className="md:p-6" style={{ padding: '120px 40px', borderTop: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+      <section className="md:p-6" style={{ padding: '120px 40px', borderTop: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
+        {/* Ambient background glows */}
+        <div style={{ position: 'absolute', top: '20%', left: '-10%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: '10%', right: '-5%', width: 350, height: 350, borderRadius: '50%', background: 'radial-gradient(circle, rgba(124,108,246,0.07) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          {/* Section header — fully centered */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="md:text-center md:items-center" style={{ marginBottom: 60, maxWidth: 600 }}
+            transition={{ duration: 0.55 }}
+            style={{ textAlign: 'center', marginBottom: 80 }}
           >
-            <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', marginBottom: 12 }}>How It Works</p>
-            <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(28px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.02em' }}>
-              From photo to action in 15 seconds
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent-dim)', border: '1px solid rgba(59,130,246,0.25)', borderRadius: 999, padding: '5px 16px', marginBottom: 20 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase' }}>How It Works</p>
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(30px, 4.5vw, 52px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: 16 }}>
+              From photo to action<br />
+              <span style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent-2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>in 15 seconds</span>
             </h2>
+            <p style={{ fontSize: 15, color: 'var(--text-secondary)', maxWidth: 480, margin: '0 auto', lineHeight: 1.65 }}>
+              A fully automated civic pipeline — from a single photo to a tracked resolution.
+            </p>
           </motion.div>
 
-          <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 32, position: 'relative' }}>
-            {/* connector line */}
-            <div style={{ position: 'absolute', top: 32, left: '12.5%', right: '12.5%', height: 1, background: 'linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent)', zIndex: 0 }} />
+          {/* Steps grid */}
+          <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, position: 'relative' }}>
+
+            {/* Connector line */}
+            <div style={{
+              position: 'absolute',
+              top: 48,
+              left: 'calc(12.5% + 2px)',
+              right: 'calc(12.5% + 2px)',
+              height: 2,
+              background: 'linear-gradient(90deg, transparent, var(--accent) 20%, var(--accent-2) 80%, transparent)',
+              zIndex: 0,
+              opacity: 0.4,
+            }} />
 
             {howItWorks.map((h, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
                 style={{ textAlign: 'center', position: 'relative', zIndex: 1 }}
               >
-                <div style={{ width: 64, height: 64, borderRadius: 'var(--radius-md)', background: 'var(--accent-dim)', border: '1px solid rgba(59,130,246,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', color: 'var(--accent)' }}>
-                  {h.icon}
+                {/* Icon container with glow */}
+                <div style={{ position: 'relative', display: 'inline-block', marginBottom: 28 }}>
+                  <div style={{
+                    position: 'absolute',
+                    inset: -8,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(59,130,246,0.18) 0%, transparent 70%)',
+                  }} />
+                  <div style={{
+                    width: 72, height: 72,
+                    borderRadius: 20,
+                    background: 'linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(124,108,246,0.1) 100%)',
+                    border: '1px solid rgba(59,130,246,0.3)',
+                    backdropFilter: 'blur(12px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    color: 'var(--accent)',
+                    position: 'relative',
+                    boxShadow: '0 0 24px rgba(59,130,246,0.12), inset 0 1px 0 rgba(255,255,255,0.06)',
+                  }}>
+                    {h.icon}
+                  </div>
+                  {/* Step badge */}
+                  <div style={{
+                    position: 'absolute',
+                    top: -8, right: -8,
+                    width: 22, height: 22,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, var(--accent), var(--accent-2))',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 10, fontWeight: 900, color: '#fff',
+                    boxShadow: '0 2px 8px rgba(59,130,246,0.4)',
+                  }}>{i + 1}</div>
                 </div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', marginBottom: 8 }}>{h.step}</div>
-                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 10 }}>{h.title}</h3>
-                <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>{h.desc}</p>
+
+                {/* Card content */}
+                <div style={{
+                  background: 'linear-gradient(160deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--radius-lg)',
+                  padding: '20px 16px',
+                  backdropFilter: 'blur(8px)',
+                  transition: 'border-color 0.2s, transform 0.2s',
+                }}>
+                  <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 10, letterSpacing: '-0.01em' }}>{h.title}</h3>
+                  <p style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.65 }}>{h.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>
