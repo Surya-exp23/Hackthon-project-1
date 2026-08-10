@@ -100,7 +100,7 @@ export default function AdminMapPage() {
       <main style={{ flex: 1, marginLeft: 220, display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
         
         {/* Filters Top Bar */}
-        <div style={{ padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
+        <div style={{ padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--border)', background: 'var(--surface)', position: 'relative', zIndex: 1000 }}>
           <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
             <span style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>City Map</span>
           </div>

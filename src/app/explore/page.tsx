@@ -47,7 +47,7 @@ export default function ExplorePage() {
   return (
     <div style={{ height: '100vh', background: 'var(--bg)', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Top nav */}
-      <nav style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 40, flexShrink: 0 }}>
+      <nav style={{ height: 56, display: 'flex', alignItems: 'center', padding: '0 20px', gap: 16, background: 'var(--surface)', borderBottom: '1px solid var(--border)', zIndex: 1000, position: 'relative', flexShrink: 0 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <button onClick={() => router.back()} className="btn btn-ghost btn-sm" style={{ gap: 6, paddingLeft: 0 }}>
             <ArrowLeft size={16} /> <span style={{ fontWeight: 600 }}>Back</span>
