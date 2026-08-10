@@ -278,11 +278,10 @@ export default function LandingPage() {
                   {s.icon}
                 </div>
                 <div>
-                  <p style={{ fontSize: 26, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1 }}>
+                  <p style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.02em', lineHeight: 1, fontFamily: 'var(--font-playfair)' }}>
                     {count.toLocaleString()}{s.suffix}
                   </p>
                   <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 2 }}>{s.label}</p>
-                  <p style={{ fontSize: 10, color: 'var(--text-muted)', fontStyle: 'italic' }}>(demo data)</p>
                 </div>
               </div>
             );
