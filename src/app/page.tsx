@@ -394,60 +394,197 @@ export default function LandingPage() {
       </section>
 
       {/* Feature Highlights */}
-      <section className="md:p-6" style={{ padding: '120px 40px', background: 'var(--surface)' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24 }}>
-          {features.map((f, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="card card-hover"
-              style={{ padding: 32 }}
-            >
-              <div style={{ marginBottom: 20 }}>{f.icon}</div>
-              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 12 }}>{f.title}</h3>
-              <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.65 }}>{f.desc}</p>
-            </motion.div>
-          ))}
-          </div>
-        </div>
-      </section>
+      <section className="md:p-6" style={{ padding: '120px 40px', background: 'var(--surface)', position: 'relative', overflow: 'hidden' }}>
+        {/* Background texture — uses CSS var so it's visible in both modes */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(var(--section-dot) 1px, transparent 1px)', backgroundSize: '32px 32px', pointerEvents: 'none' }} />
 
-      {/* CTA Section */}
-      <section style={{ padding: '0 40px 100px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative' }}>
+
+          {/* Section label */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            style={{ textAlign: 'center', marginBottom: 64 }}
+          >
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--accent-dim)', border: '1px solid var(--cta-border)', borderRadius: 999, padding: '5px 16px', marginBottom: 20 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)' }} />
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase' }}>Core Capabilities</p>
+            </div>
+            <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(28px, 4vw, 46px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, color: 'var(--text-primary)' }}>
+              Built different.<br />
+              <span style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent-2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Works smarter.</span>
+            </h2>
+          </motion.div>
+
+          {/* Bento-style 3-column cards */}
+          <div className="md:grid-cols-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+            {features.map((f, i) => {
+              // Using CSS vars where possible; only card-specific accent colours stay as rgba
+              const cardStyles = [
+                {
+                  border: 'rgba(59,130,246,0.2)',
+                  iconBg: 'var(--accent-dim)',
+                  iconBorder: 'rgba(59,130,246,0.2)',
+                  glow: 'rgba(59,130,246,0.1)',
+                  bottomLine: 'var(--accent)',
+                },
+                {
+                  border: 'var(--feature-card-border-b)',
+                  iconBg: 'var(--medium-dim)',
+                  iconBorder: 'rgba(234,179,8,0.2)',
+                  glow: 'rgba(234,179,8,0.08)',
+                  bottomLine: 'var(--medium)',
+                },
+                {
+                  border: 'var(--feature-card-border-c)',
+                  iconBg: 'var(--accent-2-dim)',
+                  iconBorder: 'rgba(14,165,233,0.2)',
+                  glow: 'rgba(14,165,233,0.1)',
+                  bottomLine: 'var(--accent-2)',
+                },
+              ];
+              const c = cardStyles[i];
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.12 }}
+                  style={{
+                    position: 'relative',
+                    background: 'var(--surface-2)',
+                    border: `1px solid ${c.border}`,
+                    borderRadius: 'var(--radius-xl)',
+                    padding: '36px 32px',
+                    overflow: 'hidden',
+                    cursor: 'default',
+                    boxShadow: 'var(--shadow-sm)',
+                    transition: 'transform 0.25s, box-shadow 0.25s',
+                  }}
+                  whileHover={{ y: -4, boxShadow: `var(--shadow-elevated), 0 0 40px ${c.glow}` }}
+                >
+                  {/* Icon box */}
+                  <div style={{
+                    width: 52, height: 52, borderRadius: 14,
+                    background: c.iconBg,
+                    border: `1px solid ${c.iconBorder}`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    marginBottom: 24,
+                  }}>
+                    {f.icon}
+                  </div>
+
+                  {/* Text */}
+                  <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 10, letterSpacing: '-0.02em', lineHeight: 1.2, color: 'var(--text-primary)' }}>{f.title}</h3>
+                  <p style={{ fontSize: 13.5, color: 'var(--text-secondary)', lineHeight: 1.7 }}>{f.desc}</p>
+
+                  {/* Bottom gradient accent line */}
+                  <div style={{
+                    position: 'absolute', bottom: 0, left: 0, right: 0, height: 2,
+                    background: `linear-gradient(90deg, transparent, ${c.bottomLine}, transparent)`,
+                    opacity: 0.6,
+                  }} />
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section style={{ padding: '60px 40px 120px', position: 'relative', overflow: 'hidden' }}>
+        {/* Far background glow — adapts via CSS var */}
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 700, height: 400, borderRadius: '50%', background: 'radial-gradient(ellipse, var(--cta-glow-a) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
             style={{
-              background: 'linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(124,108,246,0.08) 100%)',
-              border: '1px solid rgba(59,130,246,0.2)',
-              borderRadius: 'var(--radius-xl)',
-              padding: '64px 80px',
-              textAlign: 'center',
+              position: 'relative',
+              background: 'var(--cta-bg)',
+              border: '1px solid var(--cta-border)',
+              borderRadius: 28,
+              overflow: 'hidden',
+              display: 'grid',
+              gridTemplateColumns: '1fr auto',
+              alignItems: 'center',
+              gap: 40,
+              padding: '72px 80px',
+              boxShadow: 'var(--shadow-elevated)',
             }}
           >
-            <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 16 }}>
-              See something broken?<br />
-              <span style={{ color: 'var(--accent)' }}>Report it in 30 seconds.</span>
-            </h2>
-            <p style={{ fontSize: 16, color: 'var(--text-secondary)', marginBottom: 36 }}>
-              No signup needed. Just a photo, a location, and a moment of your time.
-            </p>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
-              <Link href="/report" className="btn btn-primary btn-lg">
-                <Camera size={18} />
-                Report an Issue
-                <ArrowRight size={16} />
-              </Link>
-              <Link href="/admin" className="btn btn-secondary btn-lg">
-                Admin Login
-              </Link>
+            {/* Layered corner glows — all via CSS vars */}
+            <div style={{ position: 'absolute', top: -80, left: -80, width: 320, height: 320, borderRadius: '50%', background: 'radial-gradient(circle, var(--cta-glow-a) 0%, transparent 70%)', pointerEvents: 'none' }} />
+            <div style={{ position: 'absolute', bottom: -60, right: -60, width: 280, height: 280, borderRadius: '50%', background: 'radial-gradient(circle, var(--cta-glow-b) 0%, transparent 70%)', pointerEvents: 'none' }} />
+
+            {/* Dot-grid overlay — subtle in both modes */}
+            <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(var(--border) 1px, transparent 1px)', backgroundSize: '28px 28px', pointerEvents: 'none', opacity: 0.5 }} />
+
+            {/* Bottom accent line */}
+            <div style={{ position: 'absolute', bottom: 0, left: '10%', right: '10%', height: 1, background: 'linear-gradient(90deg, transparent, var(--accent), var(--accent-2), transparent)', opacity: 0.6 }} />
+
+            {/* Left: Text content */}
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              {/* Floating tag */}
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'var(--accent-dim)', border: '1px solid var(--cta-border)', borderRadius: 999, padding: '4px 14px', marginBottom: 24 }}>
+                <div style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--low)', boxShadow: '0 0 6px var(--low)' }} />
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', color: 'var(--accent)', textTransform: 'uppercase' }}>Live Platform · Free to Use</span>
+              </div>
+
+              <h2 style={{ fontFamily: 'var(--font-playfair)', fontSize: 'clamp(30px, 4vw, 52px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: 18, color: 'var(--text-primary)' }}>
+                See something broken?<br />
+                <span style={{ background: 'linear-gradient(90deg, var(--accent), var(--accent-2))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                  Report it in 30 seconds.
+                </span>
+              </h2>
+
+              <p style={{ fontSize: 15, color: 'var(--text-secondary)', lineHeight: 1.7, maxWidth: 460, marginBottom: 36 }}>
+                No account needed. Snap a photo, drop a pin, and let AI handle the rest — your report reaches the right department instantly.
+              </p>
+
+              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+                <Link href="/report" className="btn btn-primary btn-lg" style={{ gap: 10, paddingLeft: 28, paddingRight: 28 }}>
+                  <Camera size={18} />
+                  Report an Issue
+                  <ArrowRight size={16} />
+                </Link>
+                <Link href="/explore" className="btn btn-outline btn-lg" style={{ gap: 8 }}>
+                  Explore the Map
+                </Link>
+              </div>
+            </div>
+
+            {/* Right: Decorative stat panel */}
+            <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', gap: 16, flexShrink: 0, minWidth: 200 }}>
+              {[
+                { label: 'Issues Logged', value: '2,840+', color: 'var(--accent)' },
+                { label: 'Resolved This Month', value: '1,920', color: 'var(--low)' },
+                { label: 'Avg Resolution', value: '46 hrs', color: 'var(--accent-2)' },
+              ].map((stat, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
+                  style={{
+                    background: 'var(--surface-2)',
+                    border: '1px solid var(--border)',
+                    borderRadius: 14,
+                    padding: '16px 20px',
+                    backdropFilter: 'blur(8px)',
+                  }}
+                >
+                  <div style={{ fontSize: 22, fontWeight: 900, fontFamily: 'var(--font-playfair)', color: stat.color, letterSpacing: '-0.02em', marginBottom: 2 }}>{stat.value}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 600, letterSpacing: '0.03em' }}>{stat.label}</div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

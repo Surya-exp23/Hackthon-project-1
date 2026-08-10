@@ -16,12 +16,22 @@
   --text-secondary: #9AA1AC;
   --text-muted: #5B6270;
 
-  /* Accent palette */
+  /* Accent palette — blue-first, no heavy purple */
   --accent: #3B82F6;
   --accent-hover: #2563EB;
   --accent-dim: rgba(59, 130, 246, 0.12);
-  --accent-2: #7C6CF6;
-  --accent-2-dim: rgba(124, 108, 246, 0.12);
+  --accent-2: #0EA5E9;     /* sky-blue instead of purple */
+  --accent-2-dim: rgba(14, 165, 233, 0.12);
+
+  /* Section-level adaptive tokens */
+  --cta-bg: rgba(14, 17, 32, 0.92);
+  --cta-border: rgba(59, 130, 246, 0.22);
+  --cta-glow-a: rgba(59, 130, 246, 0.14);
+  --cta-glow-b: rgba(14, 165, 233, 0.1);
+  --feature-card-bg: rgba(255, 255, 255, 0.04);
+  --feature-card-border-b: rgba(234, 179, 8, 0.25);
+  --feature-card-border-c: rgba(14, 165, 233, 0.25);
+  --section-dot: rgba(59, 130, 246, 0.04);
 
   /* Semantic severity colors */
   --critical: #EF4444;
@@ -62,9 +72,23 @@
   --text-primary: #101317;
   --text-secondary: #5B6270;
   --text-muted: #9AA1AC;
-  --accent-dim: rgba(59, 130, 246, 0.08);
+  --accent: #2563EB;
+  --accent-dim: rgba(37, 99, 235, 0.09);
+  --accent-2: #0284C7;
+  --accent-2-dim: rgba(2, 132, 199, 0.09);
   --shadow-elevated: 0 8px 24px rgba(15, 15, 20, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
   --surface-alpha: rgba(255, 255, 255, 0.85);
+
+  /* Light-mode section tokens */
+  --cta-bg: rgba(255, 255, 255, 0.95);
+  --cta-border: rgba(37, 99, 235, 0.18);
+  --cta-glow-a: rgba(37, 99, 235, 0.06);
+  --cta-glow-b: rgba(2, 132, 199, 0.05);
+  --feature-card-bg: rgba(0, 0, 0, 0.015);
+  --feature-card-border-b: rgba(202, 138, 4, 0.3);
+  --feature-card-border-c: rgba(2, 132, 199, 0.3);
+  --section-dot: rgba(37, 99, 235, 0.035);
 }
 
 /* ==========================================
@@ -117,7 +141,7 @@ body {
    ========================================== */
 
 .glass {
-  background: rgba(20, 23, 28, 0.7);
+  background: var(--surface-alpha);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border);
