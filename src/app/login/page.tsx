@@ -26,7 +26,7 @@ function AuthContent() {
 
   // Update mode if URL changes
   useEffect(() => {
-    const queryMode = searchParams?.get('mode');
+    const queryMode = searchParams?.get('mode') ?? null;
     if (queryMode === 'register' || queryMode === 'login') {
       setMode(queryMode);
       setError('');
