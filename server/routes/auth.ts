@@ -8,8 +8,8 @@ const router = Router();
 
 const registerSchema = z.object({
   body: z.object({
-    name: z.string().min(2),
-    email: z.string().email(),
+    name: z.string().trim().min(2),
+    email: z.string().trim().email(),
     password: z.string().min(6),
     role: z.enum(['citizen', 'admin', 'department']).optional(),
   }),
@@ -17,7 +17,7 @@ const registerSchema = z.object({
 
 const loginSchema = z.object({
   body: z.object({
-    email: z.string().email(),
+    email: z.string().trim().email(),
     password: z.string(),
   }),
 });
