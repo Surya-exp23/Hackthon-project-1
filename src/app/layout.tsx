@@ -34,7 +34,7 @@ export default function RootLayout({
           speed={200} 
           shadow="0 0 10px var(--accent),0 0 5px var(--accent)" 
         />
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AuthProvider>
             {children}
             <ThemeToggle />
