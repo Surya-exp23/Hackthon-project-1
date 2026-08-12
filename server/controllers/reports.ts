@@ -99,7 +99,12 @@ export const createReport = asyncHandler(async (req: any, res: Response) => {
 // List Reports (with filtering)
 export const getReports = asyncHandler(async (req: Request, res: Response) => {
   const { status, category, severity, near, radius, userId } = req.query;
-  const filter: any = { duplicateOf: { $exists: false } }; // Return canonical only
+  const filter: any = {};
+  
+  // Only filter out duplicates for general map/feed views, let users see all their own submissions
+  if (!req.query.userId) {
+    filter.duplicateOf = { $exists: false };
+  }
 
   if (status) filter.status = status;
   if (category) filter.category = category;

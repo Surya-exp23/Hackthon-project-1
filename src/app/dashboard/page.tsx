@@ -76,12 +76,10 @@ export default function DashboardPage() {
     const fetchData = async () => {
       try {
         const [rData, nData] = await Promise.all([
-          apiClient.get('/reports'),
+          apiClient.get(`/reports?userId=${user.id}`),
           apiClient.get('/notifications').catch(() => ({ notifications: [] })),
         ]);
-        // Filter user's reports securely by casting Mongoose ObjectIds to Strings
-        const myReports = rData.reports.filter((r: any) => String(r.userId?._id || r.userId) === String(user.id));
-        setReports(myReports);
+        setReports(rData.reports || []);
         setNotifications(nData.notifications || []);
         setUnreadCount((nData.notifications || []).filter((n: any) => !n.read).length);
       } catch {

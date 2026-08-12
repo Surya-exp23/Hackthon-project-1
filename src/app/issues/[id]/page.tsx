@@ -7,8 +7,10 @@ import { MapPin, ArrowLeft, AlertTriangle, Loader2, Users, Clock } from 'lucide-
 import { apiClient } from '@/lib/apiClient';
 import { PriorityGauge } from '@/components/ui/PriorityGauge';
 import { StatusTimeline } from '@/components/ui/StatusTimeline';
+import { useAuth } from '@/context/AuthContext';
 
 export default function IssueDetailPage() {
+  const { user } = useAuth();
   const params = useParams();
   const id = params?.id as string;
   const [report, setReport] = useState<any>(null);
@@ -45,7 +47,7 @@ export default function IssueDetailPage() {
     <div style={{ minHeight: '100vh', background: 'var(--bg)', padding: '80px 24px 40px' }}>
       {/* Minimal navbar */}
       <nav style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50, height: 64, display: 'flex', alignItems: 'center', padding: '0 32px', background: 'var(--surface-alpha)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--border-subtle)' }}>
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
+        <Link href={user ? (user.role === 'admin' ? '/admin' : user.role === 'department' ? '/department' : '/dashboard') : '/'} style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
           <img src="/Untitled-2.svg" alt="CivicLens Logo" style={{ width: 28, height: 28 }} />
           <span style={{ fontWeight: 800, fontSize: 16 }}>CivicLens</span>
         </Link>
