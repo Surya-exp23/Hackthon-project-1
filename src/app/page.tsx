@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, MapPin, Camera, Brain, Zap, Shield, BarChart2, CheckCircle2, ChevronRight, Activity, Map, AlertTriangle, Clock, Users, TrendingUp } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 // Animated counter hook
 function useCounter(target: number, duration = 1200) {
@@ -96,9 +98,18 @@ function MapDot({ x, y, color, delay }: any) {
 }
 
 export default function LandingPage() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
+  
   const [activeTab, setActiveTab] = useState('citizens');
   const [wordIndex, setWordIndex] = useState(0);
   const cycleWords = ['UNDERSTAND', 'INNOVATE', 'DESIGN'];
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.replace(user.role === 'admin' ? '/admin' : user.role === 'department' ? '/department' : '/dashboard');
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     const interval = setInterval(() => {
