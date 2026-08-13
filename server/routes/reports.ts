@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { createReport, getReports, getReportById, analyzeReport, checkDuplicates } from '../controllers/reports';
-import { authenticate } from '../middleware/auth';
+import { authenticate, optionalAuthenticate } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { z } from 'zod';
 
@@ -21,11 +21,11 @@ const reportSchema = z.object({
   }).passthrough(),
 });
 
-router.post('/', authenticate, validate(reportSchema), createReport);
+router.post('/', optionalAuthenticate, validate(reportSchema), createReport);
 router.get('/', getReports); // public or auth depending on need; let's allow public for map
 router.get('/:id', getReportById);
 
-router.post('/analyze', authenticate, analyzeReport);
-router.post('/duplicate-check', authenticate, checkDuplicates);
+router.post('/analyze', optionalAuthenticate, analyzeReport);
+router.post('/duplicate-check', optionalAuthenticate, checkDuplicates);
 
 export default router;

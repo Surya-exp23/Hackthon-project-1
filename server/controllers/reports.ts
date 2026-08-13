@@ -33,7 +33,7 @@ export const createReport = asyncHandler(async (req: any, res: Response) => {
   const { imageUrl, description, location, address, category, issueType, severity, confidence, aiSummary, recommendedDepartment, riskFactors, duplicateOf } = req.body;
 
   let reportData: any = {
-    userId: req.user.id,
+    userId: req.user?.id || undefined,
     imageUrl,
     description,
     location,

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { v2 as cloudinary } from 'cloudinary';
-import { authenticate } from '../middleware/auth';
+import { optionalAuthenticate } from '../middleware/auth';
 
 const router = Router();
 
@@ -23,7 +23,7 @@ const upload = multer({
   },
 });
 
-router.post('/', authenticate, upload.single('image'), async (req, res) => {
+router.post('/', optionalAuthenticate, upload.single('image'), async (req, res) => {
   try {
     cloudinary.config({
       cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
